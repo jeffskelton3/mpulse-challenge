@@ -1,7 +1,10 @@
 from contextlib import contextmanager
 import sqlalchemy as sa
 from sqlalchemy.orm import sessionmaker, Session
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 POSTGRES_URL = os.getenv("POSTGRES_URL", "localhost")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT", 5432)
