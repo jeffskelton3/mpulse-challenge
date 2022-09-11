@@ -21,12 +21,12 @@ depends_on = None
 def upgrade() -> None:
     op.create_table(
         'account',
-        Column("account_id", Integer, primary_key=True)
+        Column("account_id", Integer, index=True, primary_key=True)
     )
     op.create_table(
         'member_account',
-        Column("member_account_id", UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
-        Column("account_id", Integer),
+        Column("member_account_id", UUID(as_uuid=True), index=True, primary_key=True, default=uuid.uuid4),
+        Column("account_id", Integer, index=True),
         Column("member_id", UUID(as_uuid=True), unique=True),
     )
     op.create_foreign_key(

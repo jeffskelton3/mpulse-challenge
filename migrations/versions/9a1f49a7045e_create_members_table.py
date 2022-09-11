@@ -25,7 +25,7 @@ def upgrade() -> None:
         Column("client_member_id", String(50), index=True, unique=True, nullable=False),
         Column("first_name", String(100), nullable=False),
         Column("last_name", String(100), nullable=False),
-        Column("phone_number", String(50), nullable=False),
+        Column("phone_number", String(50), index=True, nullable=False),
     )
 
 
