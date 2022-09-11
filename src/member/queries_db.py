@@ -3,6 +3,7 @@ import sqlalchemy as sa
 from src.member.models import Member, MemberBody
 from sqlalchemy.dialects import postgresql
 from src.db.db import get_session
+from src.utils.list_helpers import unique_basemodel_list
 
 
 def get_members():
@@ -31,10 +32,10 @@ def add_member(member: MemberBody):
 
 
 def upsert_members(members: [MemberBody]) -> None:
-    member_list = __dedupe_member_list(members)
+    member_list = unique_basemodel_list(members, "client_member_id")
     insert_statement = postgresql.insert(Member).values(member_list)
     update_columns = {col.name: col for col in insert_statement.excluded if
-                      col.name not in ['client_member_id']}
+                      col.name not in ['client_member_id', 'member_id']}
     upsert_statement = insert_statement.on_conflict_do_update(
         index_elements=['client_member_id'],
         set_=update_columns
@@ -42,14 +43,3 @@ def upsert_members(members: [MemberBody]) -> None:
     with get_session() as session:
         session.execute(upsert_statement)
         session.commit()
-
-
-def __dedupe_member_list(members: [MemberBody]) -> [MemberBody]:
-    unique_members = {}
-    for member in members:
-        unique_members[member.client_member_id] = member
-
-    deduped_member_list = []
-    for k, v in unique_members.items():
-        deduped_member_list.append(v.dict())
-    return deduped_member_list
