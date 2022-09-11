@@ -27,6 +27,13 @@ def find_by_id(member_id: str):
         return result.scalars().one_or_none()
 
 
+def find_by_phone_number(phone_number: str):
+    statement = sa.select(Member).filter(Member.phone_number == phone_number)
+    with get_session() as session:
+        result = session.execute(statement)
+        return result.scalars().one_or_none()
+
+
 def add_member(member: MemberBody):
     upsert_members([member])
 
