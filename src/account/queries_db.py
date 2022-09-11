@@ -9,6 +9,15 @@ from src.member.models import Member
 from src.utils.list_helpers import unique_basemodel_list
 
 
+def find_by_account_id(account_id: int):
+    statement: Select = sa.select(Member)
+    statement.join(MemberAccount, Member.member_id == MemberAccount.member_id)
+    statement.where(MemberAccount.account_id == account_id)
+    with get_session() as session:
+        result: Result = session.execute(statement)
+        return result.scalars().all()
+
+
 def upsert_accounts(accounts: [AccountBody]):
     account_list = unique_basemodel_list(accounts, "account_id")
     insert_statement = postgresql.insert(Account).values(account_list)

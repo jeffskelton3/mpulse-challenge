@@ -3,8 +3,8 @@ import csv
 
 from fastapi import FastAPI, UploadFile, File
 
-from src.account.models import MemberAccountBody, Account, AccountBody
-from src.account.queries_db import upsert_member_accounts, upsert_accounts
+from src.account.models import MemberAccountBody, AccountBody
+from src.account.queries_db import upsert_member_accounts, upsert_accounts, find_by_account_id
 from src.member.models import MemberBody
 from src.member.queries_db import get_members, add_member, upsert_members, find_member_by_client_member_id, find_by_id
 
@@ -29,13 +29,13 @@ async def find_member_by_id(member_id: str):
     return find_by_id(member_id)
 
 
-@app.get("account/{account_id}/members")
-async def find_member_by_account():
+@app.get("/accounts/{account_id}/members")
+async def find_member_by_account(account_id: int):
     """
-    Get a member for a given Account ID
+    Get a members for a given Account ID
     :return:
     """
-    return None
+    return find_by_account_id(account_id)
 
 
 @app.get("/members")
