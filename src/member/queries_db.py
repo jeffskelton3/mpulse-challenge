@@ -6,29 +6,21 @@ from src.db.db import get_session
 from src.utils.list_helpers import unique_basemodel_list
 
 
-def get_members():
-    statement = sa.select(Member).filter()
+def get_members(filter_params=None):
+    statement = sa.select(Member)
+    if filter_params["phone_number"] is not None:
+        statement = statement.where(Member.phone_number == filter_params["phone_number"])
+
+    if filter_params["client_member_id"] is not None:
+        statement = statement.where(Member.client_member_id == filter_params["client_member_id"])
+
     with get_session() as session:
         result = session.execute(statement)
         return result.scalars().all()
 
 
-def find_member_by_client_member_id(client_member_id: str):
-    statement = sa.select(Member).filter(Member.client_member_id == client_member_id)
-    with get_session() as session:
-        result = session.execute(statement)
-        return result.scalars().one_or_none()
-
-
 def find_by_id(member_id: str):
     statement = sa.select(Member).filter(Member.member_id == member_id)
-    with get_session() as session:
-        result = session.execute(statement)
-        return result.scalars().one_or_none()
-
-
-def find_by_phone_number(phone_number: str):
-    statement = sa.select(Member).filter(Member.phone_number == phone_number)
     with get_session() as session:
         result = session.execute(statement)
         return result.scalars().one_or_none()
