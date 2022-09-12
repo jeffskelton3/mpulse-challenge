@@ -1,12 +1,25 @@
-version: "3"
+version: "3.6"
 services:
   postgres:
-    image: postgres:latest
-    container_name: mpulse-challenge-db  
+    image: postgres:11-alpine
+    container_name: mpulse-challenge-db
     ports:
       - "5432:5432"
     volumes:
       - ./data/postgres:/var/src/postgresql/data
     env_file:
       - ./.env
-    command: ["postgres", "-c", "log_statement=all"]
+    command: [ "postgres", "-c", "log_statement=all" ]
+  python:
+    depends_on:
+      - postgres
+    image: ubuntu:latest
+    container_name: mpulse-challenge-env
+    volumes:
+      - ./:/usr/home/dev
+    working_dir: /usr/home/dev
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    entrypoint: /usr/home/dev/scripts/entrypoint.sh
