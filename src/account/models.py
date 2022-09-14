@@ -16,10 +16,17 @@ class Account(Base):
 
 class MemberAccount(Base):
     __tablename__ = "member_account"
-    member_account_id = sa.Column("member_account_id", UUID(as_uuid=True), primary_key=True, unique=True,
-                                  default=uuid.uuid4)
+    member_account_id = sa.Column(
+        "member_account_id",
+        UUID(as_uuid=True),
+        primary_key=True,
+        unique=True,
+        default=uuid.uuid4,
+    )
     account_id = sa.Column("account_id", sa.INTEGER, ForeignKey("account.account_id"))
-    member_id = sa.Column("member_id", UUID(as_uuid=True), ForeignKey("member.member_id"))
+    member_id = sa.Column(
+        "member_id", UUID(as_uuid=True), ForeignKey("member.member_id")
+    )
 
 
 class MemberAccountBody(BaseModel):

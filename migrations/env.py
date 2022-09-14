@@ -77,14 +77,12 @@ def run_migrations_online() -> None:
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
-        url=get_url()
+        url=get_url(),
     )
 
     with connectable.connect() as connection:
         context.configure(
-            url=get_url(),
-            connection=connection,
-            target_metadata=target_metadata
+            url=get_url(), connection=connection, target_metadata=target_metadata
         )
 
         with context.begin_transaction():

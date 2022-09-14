@@ -10,8 +10,16 @@ Base = declarative_base()
 
 class Member(Base):
     __tablename__ = "member"
-    member_id = sa.Column("member_id", UUID(as_uuid=True), primary_key=True, unique=True, default=uuid.uuid4)
-    client_member_id = sa.Column("client_member_id", sa.VARCHAR, unique=True, nullable=False)
+    member_id = sa.Column(
+        "member_id",
+        UUID(as_uuid=True),
+        primary_key=True,
+        unique=True,
+        default=uuid.uuid4,
+    )
+    client_member_id = sa.Column(
+        "client_member_id", sa.VARCHAR, unique=True, nullable=False
+    )
     first_name = sa.Column("first_name", sa.VARCHAR, nullable=False)
     last_name = sa.Column("last_name", sa.VARCHAR, nullable=False)
     phone_number = sa.Column("phone_number", sa.VARCHAR, nullable=False)
