@@ -12,12 +12,12 @@ app = FastAPI()
 
 
 @app.get("/members")
-async def member_search(limit=20, offset=0, phone_number=None, client_member_id=None):
+async def member_search(size=20, page=1, phone_number=None, client_member_id=None):
     return get_members({
         "phone_number": phone_number,
         "client_member_id": client_member_id,
-        "limit": limit,
-        "offset": offset
+        "size": size,
+        "page": page
     })
 
 

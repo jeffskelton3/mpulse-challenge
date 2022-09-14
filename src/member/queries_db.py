@@ -9,8 +9,8 @@ from src.utils.list_helpers import unique_basemodel_list
 
 def get_members(filter_params=None):
     statement = sa.select(Member)
-    limit = int(filter_params["limit"])
-    offset = limit * int(filter_params["offset"])
+    limit = int(filter_params["size"])
+    offset = limit * (int(filter_params["page"]) - 1)
     statement = statement.limit(limit).offset(offset)
 
     if filter_params["phone_number"] is not None:
