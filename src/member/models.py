@@ -22,3 +22,11 @@ class MemberBody(BaseModel):
     first_name: str
     last_name: str
     phone_number: str
+
+
+class CreateMemberBody(BaseModel):
+    client_member_id: str
+    first_name: str
+    last_name: str
+    phone_number: str
+    account_id: str
