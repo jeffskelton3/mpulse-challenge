@@ -40,6 +40,7 @@ def upgrade() -> None:
         referent_table="account",
         local_cols=["account_id"],
         remote_cols=["account_id"],
+        ondelete="CASCADE"
     )
 
     op.create_foreign_key(
@@ -48,6 +49,7 @@ def upgrade() -> None:
         referent_table="member",
         local_cols=["member_id"],
         remote_cols=["member_id"],
+        ondelete="CASCADE"
     )
 
 

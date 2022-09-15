@@ -10,12 +10,19 @@ from src.utils.list_helpers import unique_basemodel_list
 
 
 def get_members(filter_params=None):
+    if filter_params is None:
+        filter_params = {}
+
     statement = sa.select(Member)
 
-    if filter_params is None:
-        filter_params = {"size": 1, "page": 20}
-    limit = int(filter_params["size"])
-    offset = limit * (int(filter_params["page"]) - 1)
+    limit = 20
+    if __filter_param_exists("size", filter_params):
+        limit = int(filter_params["size"])
+
+    offset = 0
+    if __filter_param_exists("page", filter_params):
+        offset = limit * (int(filter_params["page"]) - 1)
+
     statement = statement.limit(limit).offset(offset)
 
     if __filter_param_exists("phone_number", filter_params):

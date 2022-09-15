@@ -9,8 +9,17 @@ load_dotenv()
 
 def build_db_url():
     connection_url = build_connection_url()
-    database = os.getenv("POSTGRES_DB", "")
+    database = get_db_name()
     return f"{connection_url}/{database}"
+
+
+def get_db_name():
+    database = os.getenv("POSTGRES_DB", "")
+    env = os.getenv("ENV", "")
+    if env == "test":
+        return f"{database}_test"
+    else:
+        return database
 
 
 def build_connection_url():

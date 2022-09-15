@@ -1,5 +1,4 @@
 import os
-import warnings
 
 import alembic
 import pytest
@@ -9,13 +8,13 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from alembic import command
 from sqlalchemy_utils import database_exists
 
-from src.db.db import Base, build_connection_url
+from src.db.db import Base, build_connection_url, get_db_name
 
 
 @pytest.fixture(scope="session")
-def connection(request):
+def connection():
     connection_url = build_connection_url()
-    database = f'{os.getenv("POSTGRES_DB", "")}_test'
+    database = get_db_name()
     if not database_exists(f"{connection_url}/{database}"):
         engine = create_engine(connection_url)
         session = sessionmaker(bind=engine)()
@@ -29,19 +28,10 @@ def connection(request):
     return engine.connect()
 
 
-# @pytest.fixture(scope="session")
-# def session(connection):
-#     engine = connection.engine
-#     session = sessionmaker(bind=engine)()
-#     return session
-
-
 @pytest.fixture(scope="session")
 def apply_migrations():
     config = Config("alembic.ini")
     alembic.command.upgrade(config, "head")
-    yield
-    alembic.command.downgrade(config, "base")
 
 
 @pytest.fixture(scope="session", autouse=True)
