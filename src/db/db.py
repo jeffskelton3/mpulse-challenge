@@ -6,20 +6,21 @@ import os
 
 load_dotenv()
 
-POSTGRES_URL = os.getenv("POSTGRES_URL", "localhost")
-POSTGRES_PORT = os.getenv("POSTGRES_PORT", 5432)
-POSTGRES_USER = os.getenv("POSTGRES_USER", "")
-POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
-POSTGRES_DB = os.getenv("POSTGRES_DB", "")
-DB_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_URL}:{POSTGRES_PORT}/{POSTGRES_DB}"
-engine = sa.create_engine(DB_URL)
 
-LocalSession = sessionmaker(bind=engine)
+def build_db_url():
+    url = os.getenv("POSTGRES_URL", "localhost")
+    port = os.getenv("POSTGRES_PORT", 5432)
+    user = os.getenv("POSTGRES_USER", "")
+    password = os.getenv("POSTGRES_PASSWORD", "")
+    database = os.getenv("POSTGRES_DB", "")
+    return f"postgresql://{user}:{password}@{url}:{port}/{database}"
 
 
 @contextmanager
 def get_session() -> Session:
-    session = LocalSession()
+    engine = sa.create_engine(build_db_url())
+    local_session = sessionmaker(bind=engine)
+    session = local_session()
     try:
         yield session
     finally:
