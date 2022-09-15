@@ -1,3 +1,5 @@
+from typing import Any
+
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import Insert
 
@@ -9,16 +11,19 @@ from src.utils.list_helpers import unique_basemodel_list
 
 def get_members(filter_params=None):
     statement = sa.select(Member)
+
+    if filter_params is None:
+        filter_params = {"size": 1, "page": 20}
     limit = int(filter_params["size"])
     offset = limit * (int(filter_params["page"]) - 1)
     statement = statement.limit(limit).offset(offset)
 
-    if filter_params["phone_number"] is not None:
+    if __filter_param_exists("phone_number", filter_params):
         statement = statement.where(
             Member.phone_number == filter_params["phone_number"]
         )
 
-    if filter_params["client_member_id"] is not None:
+    if __filter_param_exists("client_member_id", filter_params):
         statement = statement.where(
             Member.client_member_id == filter_params["client_member_id"]
         )
@@ -50,3 +55,7 @@ def upsert_members(members: [MemberBody]) -> None:
     with get_session() as session:
         session.execute(upsert_statement)
         session.commit()
+
+
+def __filter_param_exists(key, filter_params: dict[str, Any]) -> bool:
+    return key in filter_params and filter_params[key] is not None

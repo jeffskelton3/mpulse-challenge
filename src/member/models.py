@@ -1,11 +1,10 @@
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel
 import sqlalchemy as sa
 
-Base = declarative_base()
+from src.db.db import Base
 
 
 class Member(Base):
