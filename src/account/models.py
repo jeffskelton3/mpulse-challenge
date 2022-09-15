@@ -23,9 +23,13 @@ class MemberAccount(Base):
         unique=True,
         default=uuid.uuid4,
     )
-    account_id = sa.Column("account_id", sa.INTEGER, ForeignKey("account.account_id", ondelete="CASCADE"))
+    account_id = sa.Column(
+        "account_id", sa.INTEGER, ForeignKey("account.account_id", ondelete="CASCADE")
+    )
     member_id = sa.Column(
-        "member_id", UUID(as_uuid=True), ForeignKey("member.member_id", ondelete="CASCADE")
+        "member_id",
+        UUID(as_uuid=True),
+        ForeignKey("member.member_id", ondelete="CASCADE"),
     )
 
 

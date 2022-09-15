@@ -15,10 +15,18 @@ loop = asyncio.get_event_loop()
 
 
 class BulkMemberIngestion:
-    def __init__(self,
-                 producer=AIOKafkaProducer(bootstrap_servers=KAFKA_INSTANCE, client_id=CLIENT_ID, loop=loop),
-                 consumer=AIOKafkaConsumer("member_upload", bootstrap_servers=KAFKA_INSTANCE, client_id=CLIENT_ID,
-                                           loop=loop)):
+    def __init__(
+        self,
+        producer=AIOKafkaProducer(
+            bootstrap_servers=KAFKA_INSTANCE, client_id=CLIENT_ID, loop=loop
+        ),
+        consumer=AIOKafkaConsumer(
+            "member_upload",
+            bootstrap_servers=KAFKA_INSTANCE,
+            client_id=CLIENT_ID,
+            loop=loop,
+        ),
+    ):
         self.producer = producer
         self.consumer = consumer
 
