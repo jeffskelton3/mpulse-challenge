@@ -1,5 +1,5 @@
-from src.member.models import MemberBody
-from src.member.queries_db import get_members, upsert_members
+from src.member.models import MemberBody, Member
+from src.member.queries_db import get_members, upsert_members, find_by_id
 
 members_stub = [MemberBody(
     client_member_id="123",
@@ -49,3 +49,17 @@ def test_pagination():
         "page": "1"
     })
     assert len(results) == 1
+
+
+def test_find_by_member_id(db_session):
+    member = Member(
+        first_name="Donny",
+        last_name="Kerabatsos",
+        phone_number="3333333333",
+        client_member_id="789"
+    )
+    db_session.add(member)
+    db_session.commit()
+    created_record = db_session.query(Member).first()
+    result = find_by_id(str(created_record.member_id))
+    assert result.member_id == created_record.member_id
