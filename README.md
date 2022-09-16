@@ -11,7 +11,7 @@ After the boot sequence completes visit `http://localhost:8000/docs` you should 
 
 ### Notable technology choices
 
-Full disclosure: Richie recommended fast api and kafka. I am glad he did. They're great.
+Full disclosure: Richie recommended FastAPI and kafka. I am glad he did. They're great.
 
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [postgres](https://www.postgresql.org/) + [sqlalchemy](https://www.sqlalchemy.org/)
